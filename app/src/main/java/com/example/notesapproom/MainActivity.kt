@@ -76,16 +76,21 @@ class MainActivity : AppCompatActivity() {
         // positive button text and action
         dialogBuilder.setPositiveButton("ok", DialogInterface.OnClickListener { dialog, id ->
             val str = input.text.toString()
-            val s = Note(ID,str)
-            CoroutineScope(Dispatchers.IO).launch {
-                NoteDatabase.getInstance(applicationContext).StudentDao().updateNote(s)
+            if(str.isEmpty()){
+                Toast.makeText(applicationContext, "Fill all filed please!! ", Toast.LENGTH_SHORT)
+                        .show()
+            }else {
+                val s = Note(ID, str)
+                CoroutineScope(Dispatchers.IO).launch {
+                    NoteDatabase.getInstance(applicationContext).StudentDao().updateNote(s)
+                }
+                Toast.makeText(applicationContext, "data updated successfully! ", Toast.LENGTH_SHORT)
+                        .show()
+                println("updated item")
+                //retrieve data and update recycler view
+                show()
             }
-            Toast.makeText(applicationContext, "data updated successfully! ", Toast.LENGTH_SHORT)
-                    .show()
-            println("updated item")
-            //retrieve data and update recycler view
-            show()
-        })
+            })
                 // negative button text and action
                 .setNegativeButton("cancel", DialogInterface.OnClickListener { dialog, id ->
                 })
